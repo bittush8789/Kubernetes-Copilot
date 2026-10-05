@@ -1,0 +1,41 @@
+# Virtual environment
+.venv/
+venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+
+# Environment secrets
+.env
+*.pem
+*.key
+
+# ChromaDB data (rebuilt at runtime)
+chroma_db/
+
+# Docker
+docker-compose.yml
+deploy/
+
+# IDE & OS
+.vscode/
+.idea/
+*.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Docs
+README.md
+*.md
+
+# SSL certs
+ssl/
+
+# Logs
+*.log

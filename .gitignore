@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+*.egg-info/
+dist/
+build/
+
+# Environment & Secrets (NEVER commit these)
+.env
+*.pem
+*.key
+
+# ChromaDB data (large, deploy separately)
+chroma_db/
+
+# IDE
+.vscode/
+.idea/
+*.DS_Store
+
+# Logs
+*.log
+logs/
+
+# SSL certificates
+ssl/

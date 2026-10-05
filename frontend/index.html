@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kubernetes Copilot — Executive & Business Advisor</title>
+    <meta name="description" content="AI-powered Kubernetes advisor for business leaders, product managers, and executives. Plain English explanations, cost & uptime impact, and official documentation grounding.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="mode-business">
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="brand">
+                    <div class="k8s-logo">
+                        <i class="fa-solid fa-dharmachakra"></i>
+                    </div>
+                    <div class="brand-text">
+                        <h1>K8s Copilot</h1>
+                        <span class="badge-tag executive"><i class="fa-solid fa-briefcase"></i> Business Edition</span>
+                    </div>
+                </div>
+                <button id="btn-new-chat" class="btn-new-chat" title="Start a fresh conversation">
+                    <i class="fa-solid fa-plus"></i> New Briefing
+                </button>
+            </div>
+
+            <!-- View Mode Selector -->
+            <div class="sidebar-section">
+                <div class="section-title">Explanation Style</div>
+                <div class="view-mode-toggle">
+                    <button class="mode-btn active" id="btn-mode-business" data-mode="business">
+                        <i class="fa-solid fa-user-tie"></i>
+                        <span>Executive</span>
+                    </button>
+                    <button class="mode-btn" id="btn-mode-technical" data-mode="technical">
+                        <i class="fa-solid fa-code"></i>
+                        <span>Technical</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quick Business Questions -->
+            <div class="sidebar-section">
+                <div class="section-title">Common Business Questions</div>
+                <div class="prompt-chips">
+                    <button class="prompt-chip" data-prompt="Why should our company use Kubernetes instead of traditional virtual machines? What is the ROI?">
+                        <i class="fa-solid fa-chart-line"></i> Why use Kubernetes? (ROI & Benefits)
+                    </button>
+                    <button class="prompt-chip" data-prompt="How does Kubernetes prevent customer downtime when a server crashes?">
+                        <i class="fa-solid fa-shield-heart"></i> How it prevents customer downtime
+                    </button>
+                    <button class="prompt-chip" data-prompt="Explain Pods, Containers, and Clusters using a simple real-world analogy.">
+                        <i class="fa-solid fa-lightbulb"></i> Pods & Containers explained simply
+                    </button>
+                    <button class="prompt-chip" data-prompt="Our developers mentioned CrashLoopBackOff during an incident. What does this mean in plain English and how do we resolve it?">
+                        <i class="fa-solid fa-triangle-exclamation"></i> What is CrashLoopBackOff? (Incidents)
+                    </button>
+                    <button class="prompt-chip" data-prompt="How does Kubernetes auto-scaling reduce our monthly cloud hosting bill?">
+                        <i class="fa-solid fa-hand-holding-dollar"></i> How it saves cloud costs
+                    </button>
+                    <button class="prompt-chip" data-prompt="How do zero-downtime rolling updates work when deploying new application features?">
+                        <i class="fa-solid fa-rocket"></i> Zero-downtime feature releases
+                    </button>
+                </div>
+            </div>
+
+            <!-- Business Glossary Shortcut -->
+            <div class="sidebar-section">
+                <div class="section-title">Reference Tools</div>
+                <button id="btn-open-glossary" class="btn-glossary-trigger">
+                    <i class="fa-solid fa-book-open"></i>
+                    <span>Kubernetes Glossary for Leaders</span>
+                </button>
+            </div>
+
+            <!-- System Info -->
+            <div class="sidebar-footer">
+                <div class="system-status">
+                    <span class="status-indicator online"></span>
+                    <span id="system-status-text">Verified Standards Connected</span>
+                </div>
+                <div class="model-info-pill">
+                    <i class="fa-solid fa-microchip"></i>
+                    <span id="llm-model-badge">Groq (GPT-OSS 120B • Medium)</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Chat Area -->
+        <main class="chat-container">
+            <!-- Header Bar -->
+            <header class="chat-header">
+                <div class="header-left">
+                    <button id="sidebar-toggle" class="sidebar-toggle" title="Toggle Sidebar">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div class="header-title-group">
+                        <h2 class="chat-title">Kubernetes Copilot</h2>
+                        <span class="chat-subtitle">Executive AI Advisor • Plain English • Grounded in Official Standards</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="header-badge-group">
+                        <span class="executive-pill"><i class="fa-solid fa-check-double"></i> Grounded in Official Docs</span>
+                        <span class="executive-pill highlight" id="active-mode-display"><i class="fa-solid fa-user-tie"></i> Executive View</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Chat Message Thread -->
+            <div id="chat-messages" class="chat-messages">
+                <!-- Welcome Banner for Business Users -->
+                <div class="welcome-card" id="welcome-card">
+                    <div class="welcome-badge">
+                        <i class="fa-solid fa-sparkles"></i> Plain English Infrastructure Insights
+                    </div>
+                    <div class="welcome-icon">
+                        <i class="fa-solid fa-dharmachakra"></i>
+                    </div>
+                    <h3>Welcome to Kubernetes Copilot</h3>
+                    <p class="welcome-subtitle">
+                        Understand Kubernetes architecture, software resilience, cloud costs, and technical incidents 
+                        <strong>without getting lost in engineering jargon</strong>.
+                    </p>
+
+                    <div class="value-pillars">
+                        <div class="pillar-card">
+                            <div class="pillar-icon"><i class="fa-solid fa-lightbulb"></i></div>
+                            <h4>Plain English Analogies</h4>
+                            <p>Demystify complex container clusters with relatable real-world mental models.</p>
+                        </div>
+                        <div class="pillar-card">
+                            <div class="pillar-icon"><i class="fa-solid fa-chart-pie"></i></div>
+                            <h4>Business Value & ROI</h4>
+                            <p>Understand how infrastructure choices impact uptime, hosting bills, and team agility.</p>
+                        </div>
+                        <div class="pillar-card">
+                            <div class="pillar-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                            <h4>100% Grounded Answers</h4>
+                            <p>Every response is directly cross-referenced with official Kubernetes standards.</p>
+                        </div>
+                    </div>
+
+                    <div class="quick-starter-title">Or click a starter question to begin:</div>
+                    <div class="starter-prompt-buttons">
+                        <button class="starter-btn" data-prompt="Give me an executive overview of Kubernetes and how it benefits our business.">
+                            💼 Executive Overview & Benefits
+                        </button>
+                        <button class="starter-btn" data-prompt="What happens when an application server fails in Kubernetes? How does self-healing work?">
+                            🛡️ How Self-Healing Protects Uptime
+                        </button>
+                        <button class="starter-btn" data-prompt="What questions should I ask my engineering team about our Kubernetes cluster setup?">
+                            📋 Key Questions for Your Tech Team
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading Indicator -->
+            <div id="loading-indicator" class="loading-indicator hidden">
+                <div class="thinking-avatar">
+                    <i class="fa-solid fa-dharmachakra fa-spin"></i>
+                </div>
+                <div class="thinking-bubble">
+                    <span class="thinking-step" id="thinking-step-text">Preparing executive briefing...</span>
+                    <div class="pulse-dots">
+                        <span></span><span></span><span></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Input Area -->
+            <footer class="chat-input-container">
+                <form id="chat-form" class="chat-form">
+                    <div class="input-wrapper">
+                        <textarea 
+                            id="user-input" 
+                            placeholder="Ask any question in plain business English... (e.g., 'Why do we need Deployments?' or 'What caused our outage?')" 
+                            rows="1"
+                            required
+                        ></textarea>
+                        <button type="submit" id="send-button" class="btn-send" title="Send question">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </form>
+                <div class="input-footnote">
+                    Designed for decision makers & engineers. Grounded in official documentation with zero cluster credentials required.
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Kubernetes Business Glossary Modal -->
+    <div id="glossary-modal" class="modal-overlay hidden">
+        <div class="modal-content glossary-content">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <i class="fa-solid fa-book-open"></i>
+                    <h3>Kubernetes Glossary for Business Leaders</h3>
+                </div>
+                <button id="btn-close-glossary" class="btn-close-modal">&times;</button>
+            </div>
+            <div class="modal-body glossary-body">
+                <p class="glossary-intro">Essential terms translated into simple business analogies. Click any term to ask Copilot for a detailed briefing.</p>
+                
+                <div class="glossary-grid">
+                    <div class="glossary-card" data-term="Pod">
+                        <div class="glossary-term-header">
+                            <strong>Pod</strong>
+                            <span class="analogy-tag">The Shipping Cargo</span>
+                        </div>
+                        <p>The smallest unit in Kubernetes. It wraps your application code and settings into a standardized, portable container.</p>
+                    </div>
+
+                    <div class="glossary-card" data-term="Cluster">
+                        <div class="glossary-term-header">
+                            <strong>Cluster</strong>
+                            <span class="analogy-tag">The Entire Fleet</span>
+                        </div>
+                        <p>The group of interconnected servers that run your applications. If one server fails, the others automatically pick up the slack.</p>
+                    </div>
+
+                    <div class="glossary-card" data-term="Node">
+                        <div class="glossary-term-header">
+                            <strong>Node</strong>
+                            <span class="analogy-tag">An Individual Ship / Server</span>
+                        </div>
+                        <p>A single physical or virtual machine within your cluster that provides compute power (CPU & memory).</p>
+                    </div>
+
+                    <div class="glossary-card" data-term="Deployment">
+                        <div class="glossary-term-header">
+                            <strong>Deployment</strong>
+                            <span class="analogy-tag">The Fleet Manager</span>
+                        </div>
+                        <p>An automated supervisor that ensures the exact number of healthy app copies are running, seamlessly replacing crashed ones.</p>
+                    </div>
+
+                    <div class="glossary-card" data-term="Service & Ingress">
+                        <div class="glossary-term-header">
+                            <strong>Service & Ingress</strong>
+                            <span class="analogy-tag">The Front Door & Reception</span>
+                        </div>
+                        <p>Directs external customer traffic from the internet safely and smoothly to the right application inside the cluster.</p>
+                    </div>
+
+                    <div class="glossary-card" data-term="CrashLoopBackOff">
+                        <div class="glossary-term-header">
+                            <strong>CrashLoopBackOff</strong>
+                            <span class="analogy-tag">The Engine Stalling</span>
+                        </div>
+                        <p>When an application fails immediately upon starting, causing Kubernetes to wait and repeatedly retry launching it.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-close-glossary-footer" class="btn-primary">Close Glossary</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feedback Modal -->
+    <div id="feedback-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fa-regular fa-comment-dots"></i> How can we improve this answer?</h3>
+                <button id="btn-close-modal" class="btn-close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Help us make Kubernetes Copilot even clearer and more actionable:</p>
+                <div class="feedback-options" id="feedback-reasons-group">
+                    <label class="reason-option">
+                        <input type="radio" name="feedback-reason" value="Too Technical / Too Much Jargon">
+                        <span>Too Technical / Too Much Jargon</span>
+                    </label>
+                    <label class="reason-option">
+                        <input type="radio" name="feedback-reason" value="Incorrect Answer">
+                        <span>Incorrect Answer</span>
+                    </label>
+                    <label class="reason-option">
+                        <input type="radio" name="feedback-reason" value="Missing Business Impact">
+                        <span>Missing Business Impact / Context</span>
+                    </label>
+                    <label class="reason-option">
+                        <input type="radio" name="feedback-reason" value="Needs Simpler Analogy">
+                        <span>Needs Simpler Real-World Analogy</span>
+                    </label>
+                    <label class="reason-option">
+                        <input type="radio" name="feedback-reason" value="Other">
+                        <span>Other</span>
+                    </label>
+                </div>
+                <div class="comment-group">
+                    <label for="feedback-comment">Suggestions or details (Optional):</label>
+                    <textarea id="feedback-comment" rows="3" placeholder="Tell us what would have made this explanation more useful for you..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-cancel-feedback" class="btn-secondary">Cancel</button>
+                <button id="btn-submit-feedback" class="btn-primary">Submit Feedback</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
